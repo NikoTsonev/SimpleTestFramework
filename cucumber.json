@@ -1,0 +1,20 @@
+{
+    "default": {
+        "paths": [
+            "./features/*.feature"
+        ],
+        "publishQuite": true,
+        "dryRun": false,
+        "formatOptions": {
+            "snippetInterface": "async-await"
+        },
+        "require": [
+            "./src/*/*.ts",
+            "./src/hooks/*.ts"
+        ],
+        "require-module": "ts-node/register",
+        "format":[
+            "html:cucumber-report.html"
+        ]
+    }
+}

@@ -1,0 +1,27 @@
+{
+  "name": "simpletestframework",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "cucumber": "cucumber-js --require-module ts-node/register --format json:./reports/json/cucumber_report.json",
+    "report": "ts-node ./support/reporter.ts",
+    "test": "npm run cucumber ; npm run report",
+    "code-coverage-report": "nyc report --reporter=html"
+  },
+  "author": "Nikolay Tsonev",
+  "license": "ISC",
+  "devDependencies": {
+    "@cucumber/cucumber": "^9.3.0",
+    "@types/chai": "^4.3.5",
+    "@types/node": "^20.5.7",
+    "chai": "^4.3.8",
+    "chai-as-promised": "^7.1.1",
+    "cucumber-html-reporter": "^7.1.1",
+    "mkdirp": "^3.0.1",
+    "puppeteer": "^21.1.1",
+    "puppeteer-to-istanbul": "^1.4.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
+  },
+  "description": ""
+}

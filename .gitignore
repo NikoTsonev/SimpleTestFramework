@@ -1,0 +1,8 @@
+node_modules
+reports
+*-lock.json
+*report.html
+.vscode
+.DS_Store
+coverage
+.nyc_output

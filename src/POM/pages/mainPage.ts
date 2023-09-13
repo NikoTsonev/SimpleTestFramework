@@ -1,9 +1,10 @@
 import BasePage from "../basePage";
 
-class MainPage extends BasePage {
 
-     async goto(): Promise<void> {
-       await this.navigate('','')
+export default class MainPage extends BasePage {
+
+    async goto(): Promise<void> {
+        await this.navigate('', '')
     }
 
     protected readonly loginButtonSelector = "#custom-8397-particle a.jl-button.jl-button-white-negative";
@@ -16,5 +17,3 @@ class MainPage extends BasePage {
         await this.waitForSelectorAndClick(this.loginButtonSelector);
     }
 }
-
-export { MainPage };

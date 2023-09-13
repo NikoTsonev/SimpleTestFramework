@@ -1,12 +1,12 @@
 import { Given, Then, When } from "@cucumber/cucumber";
-import { CareersPage } from "../POM/pages/careersPage.po";
 import { expect } from "chai";
 import { page } from "../hooks/hook";
 import { error } from "console";
+import CareersPage from "../POM/pages/careersPage";
 
-const careersPage = new CareersPage();
-
+let careersPage: CareersPage;
 Given('I am on the Careers page', async function () {
+    careersPage = new CareersPage(page);
     await careersPage.goto();
 });
 
@@ -18,7 +18,7 @@ When('I click on {string} button', async function (string) {
     await careersPage.clickOnCategory(string);
 });
 
-Then('I should see relevant {string} for {string}', async function (positions: string, category) {
+Then('I should see relevant {string} for category', async function (positions: string) {
     const po = await careersPage.getTextListOpenPositions();
     await expect(po).equal(positions);
 });
@@ -30,30 +30,30 @@ When('I click on {string}', async function (position) {
 });
 
 Then('I verify information about {string}', async function (position) {
-    await careersPage.clickOnLearnMore();
+    const href = await careersPage.clickOnLearnMore();
     switch (position) {
         case "BI Analyst": {
-            expect(page.url()).contains("BI-Analyst.pdf");
+            expect(href).contains("BI-Analyst.pdf");
             break;
         }
         case "QA Automation Engineer": {
-            expect(await page.url()).contains("QA-Automation-Engineer.pdf");
+            expect(href).contains("QA-Automation-Engineer.pdf", `The ${page.url()} should contains "QA-Automation-Engineer.pdf"`);
             break;
         }
         case "Back-end Software Engineer": {
-            expect(await page.url()).contains("Back-End_Software_Engineer.pdf");
+            expect(href).contains("Back-End_Software_Engineer.pdf");
             break;
         }
         case "Front-end Software Engineer": {
-            expect(await page.url()).contains("Front-End_Software_Engineer.pdf");
+            expect(href).contains("Front-End_Software_Engineer.pdf");
             break;
         }
         case "Legal Counsel": {
-            expect(await page.url()).contains("Legal_Counsel.pdf");
+            expect(href).contains("Legal_Counsel.pdf");
             break;
         }
         case "Product Implementation Consultant": {
-            expect(await page.url()).contains("Product-implementation-consultant.pdf");
+            expect(href).contains("Product-implementation-consultant.pdf");
             break;
         }
         default:

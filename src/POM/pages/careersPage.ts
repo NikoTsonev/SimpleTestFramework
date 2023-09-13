@@ -1,9 +1,8 @@
 import BasePage from "../basePage";
 import { page } from "../../hooks/hook";
-import { ElementHandle } from "puppeteer";
 
 
-class CareersPage extends BasePage {
+export default class CareersPage extends BasePage {
 
     private readonly $OpenPositionButton = "a[href='#open-positions']";
     private readonly $OpenPositionsList = "#module-jlfaq-205 > div > div[style=''] > a";
@@ -13,11 +12,6 @@ class CareersPage extends BasePage {
     private readonly $LegalCategoryButton = "#module-jlfaq-205  ul  li[jl-filter-control=\"[data-tag~='legal']\"] a";
     private readonly $ProductCategoryButton = "#module-jlfaq-205  ul  li[jl-filter-control=\"[data-tag~='product']\"] a";
     private readonly $LearnMoreButton = "#module-jlfaq-205 > div > div.tm-wrapper.jl-open > div.jl-accordion-content > div > div > a.jl-button.jl-button-primary";
-    private readonly $QAAutomationEngineerPosition = "";
-    private readonly $FrontendSoftwareEngineerPosition = "";
-    private readonly $BackendSoftwareEngineerPosition = "";
-    private readonly $LegalCounselPosition = "";
-    private readonly $ProductImplementationConsultantPosition = "";
 
 
     getUrl(): string {
@@ -79,8 +73,10 @@ class CareersPage extends BasePage {
         }
     }
 
-    async clickOnLearnMore() {
+    async clickOnLearnMore(): Promise<string> {
         await this.waitForSelectorAndClick(this.$LearnMoreButton);
+        const button = await page.$(this.$LearnMoreButton);
+        return await button?.evaluate(element => element.href) || '';
     }
 
     private async GetAllPositions() {
@@ -89,5 +85,3 @@ class CareersPage extends BasePage {
         return elements;
     }
 }
-
-export { CareersPage };

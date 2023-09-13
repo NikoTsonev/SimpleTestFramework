@@ -8,7 +8,7 @@ Feature: Careers page
     Scenario Outline: Sorting opened positions by category
         When I click on the Open careers button
         And I click on <category> button
-        Then I should see relevant <positions> for <category>
+        Then I should see relevant <positions> for category
 
         Examples:
             | category      | positions                                                                                                                                  |

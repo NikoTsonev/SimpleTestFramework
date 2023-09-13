@@ -1,15 +1,19 @@
-import { ElementHandle } from "puppeteer";
-import { page } from "../hooks/hook";
+import { ElementHandle, Page } from "puppeteer";
 import Settings from "../../appsettings.json";
 
 export default abstract class BasePage {
 
+  private page: Page;
   abstract getUrl(): string;
   abstract goto(): Promise<void>;
 
+  constructor(page: Page) {
+    this.page = page;
+  }
+
   async navigate(app: string, path: string) {
     if (!app) {
-      await page.goto(`${Settings.BaseUrl}${path}`);
+      await this.page.goto(`${Settings.BaseUrl}${path}`);
       return
     }
 
@@ -17,26 +21,27 @@ export default abstract class BasePage {
     var pageUrl = new URL(url)
     url = `${pageUrl.protocol}//${app}.${pageUrl.host}${pageUrl.pathname}`;
 
-    await page.goto(url);
+    await this.page.goto(url);
   }
 
   async getElementTextBySelector($selector: string): Promise<string> {
-    const element = await page.waitForSelector($selector, { visible: true });
+    await this.page.waitForSelector($selector, { visible: true });
 
-    if (!element) {
-      return '';
-    }
-    return await page.$eval($selector, ele => (<HTMLElement>ele).innerText.replace(/[\n\r]+|[\s]{2,}/g, ' ').trim() || '');
+    return await this.page.$eval($selector, ele => (<HTMLElement>ele).innerText.replace(/[\n\r]+|[\s]{2,}/g, ' ').trim() || '');
+  }
+  async getAttributeBySelector(attributeName: string, $selector: string): Promise<string> {
+    await this.page.waitForSelector($selector, { visible: true });
+    return await this.page.$eval($selector, ele => ele.getAttribute(attributeName) || '');
   }
 
   async waitForSelectorAndClick($selector: string): Promise<void> {
-    await page.waitForSelector($selector, { visible: true });
-    await page.click($selector);
+    await this.page.waitForSelector($selector, { visible: true });
+    await this.page.click($selector);
   }
 
   async waitForSelectorAndType($selector: string, value: string): Promise<void> {
-    await page.waitForSelector($selector, { visible: true }).then(async () => {
-      await page.type($selector, value);
+    await this.page.waitForSelector($selector, { visible: true }).then(async () => {
+      await this.page.type($selector, value);
     });
   }
 
@@ -45,7 +50,7 @@ export default abstract class BasePage {
   }
 
   async findAndClickByText($selector: string, text: string) {
-    const elements = await page.$$($selector);
+    const elements = await this.page.$$($selector);
     elements.forEach(async (ele) => {
       if (await this.getElementText(ele) == text)
         ele.click();

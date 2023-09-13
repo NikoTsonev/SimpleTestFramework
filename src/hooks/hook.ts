@@ -1,5 +1,6 @@
 import { Browser, Page, launch } from "puppeteer";
 import Settings from "../../appsettings.json";
+import { After, Status } from "@cucumber/cucumber";
 const { BeforeAll, AfterAll, setDefaultTimeout } = require('@cucumber/cucumber');
 setDefaultTimeout(60 * 1000);
 
@@ -23,6 +24,13 @@ BeforeAll(async function () {
           width: Settings.Puppeteer.Viewport.Width, height: Settings.Puppeteer.Viewport.Height
         })
     ]);
+  }
+});
+
+After(async function ({ pickle, result }) {
+  if (result?.status == Status.FAILED) {
+    const img = await page.screenshot({ path: `reports\\${pickle.name}_${Date.now()}.png`, type: "png", fullPage: true });
+    await this.attach(img, "image/png");
   }
 });
 

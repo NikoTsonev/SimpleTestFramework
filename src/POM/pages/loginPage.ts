@@ -1,7 +1,7 @@
 import { page } from "../../hooks/hook";
 import BasePage from "../basePage";
 
-class LoginPage extends BasePage {
+export default class LoginPage extends BasePage {
 
     private readonly $mailInputSelector = "#Email";
     private readonly $passwordInputSelector = "#Password";
@@ -40,5 +40,3 @@ class LoginPage extends BasePage {
     }
     
 }
-
-export { LoginPage };
